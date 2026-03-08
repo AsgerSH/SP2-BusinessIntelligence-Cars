@@ -49,8 +49,8 @@ For at gøre modellerne endnu bedre kunne man:
 * **Encoding:** Vi skulle manuelt rense "doors" kolonnen for "d" og lave det til tal.
 
 # Udarbejdet af:
-* **https://github.com/AsgerSH
-* **https://github.com/JonasOutzen
-* **https://github.com/Frederik-BipBop
+* https://github.com/AsgerSH
+* https://github.com/JonasOutzen
+* https://github.com/Frederik-BipBop
 
 ---
