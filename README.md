@@ -48,4 +48,9 @@ For at gøre modellerne endnu bedre kunne man:
 * **Fejl i data:** Nogle biler havde negativ alder (Vi antager det er biler der ikke er kommet på markedet endnu), som vi måtte fjerne for ikke at snyde modellen.
 * **Encoding:** Vi skulle manuelt rense "doors" kolonnen for "d" og lave det til tal.
 
+# Udarbejdet af:
+* **https://github.com/AsgerSH
+* **https://github.com/JonasOutzen
+* **https://github.com/Frederik-BipBop
+
 ---
