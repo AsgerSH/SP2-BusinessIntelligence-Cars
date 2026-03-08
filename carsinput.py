@@ -14,69 +14,69 @@ import matplotlib.pyplot as plt
 
 df_cars = pd.read_csv("./data/cars.csv")
 
-# 1. Drop unnecessary columns (IDs or index columns if they exist)
+# Drops unnecessary columns 
 columns_to_drop = ["Unnamed: 0", "navn"]
 df_cars = df_cars.drop(columns=[col for col in columns_to_drop if col in df_cars.columns])
 
-# 2. Remove duplicate rows
+# Remove duplicate rows
 df_cars = df_cars.drop_duplicates()
 
 print(df_cars.isna().sum())
-print(df_cars.isna().mean())  #Percentage missing
+print(df_cars.isna().mean())
 
-# Fill numeric columns with median
+# Fills numeric columns with median
 df_cars["mpg"] = df_cars["mpg"].fillna(df_cars["mpg"].median())
 df_cars["ccm2"] = df_cars["ccm2"].fillna(df_cars["ccm2"].median())
 
-# Fill categorical column with "Unknown"
+# Fills categorical column with "Unknown"
 df_cars["region"] = df_cars["region"].fillna("Unknown")
 
 # Removing d and making doors numerical
 df_cars["doors"] = df_cars["doors"].str.replace("d", "", regex=False)
 df_cars["doors"] = pd.to_numeric(df_cars["doors"])
 
-# Verify
-print(df_cars.isna().sum()) #Should now be 0
-# Missing numeric values were replaced with the median.
-# Missing categorical values were replaced with "Unknown".
+# Verify (Should be 0)
+print(df_cars.isna().sum())
 
+
+# Changing that everything is called "veteran" in age. We chose moderne,brugt,klassisk and veteran based on years
 bins = [0, 3, 15, 25, float("inf")]
 labels = ["Moderne", "Brugt", "Klassisk", "Veteran"]
 
 df_cars["aldercat"] = pd.cut(df_cars["alder"], bins=bins, labels=labels, right=True)
-# In aldercat - everything was called veteran, now that is change from age.
+
 
 #------------------------------------------------
 #Task 2
 #------------------------------------------------
 
-# 1. Select independent variables (inputs)
+# We select independent variables (inputs)
 X = df_cars[["milage", "alder", "mpg", "ccm2"]]
 
-# 2. Select dependent variable (what we predict)
-y = df_cars["price"]     # could also be "mpg" for economy
+# And then we select dependent variable (what we predict)
+y = df_cars["price"]
 
-# 3. Split data into train (70%), validation (15%), test (15%)
+# Splitting data into train (70%), validation (15%), test (15%)
 X_train, X_temp, y_train, y_temp = train_test_split(X, y, test_size=0.30, random_state=42)
 X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=0.50, random_state=42)
 
-# 4. Create model
+# We create the model
 model = LinearRegression()
 
-# 5. Train the model
+# And then we train the model
 model.fit(X_train, y_train)
 
-# 6. Validate the model
+# Followed by validating the model
 val_predictions = model.predict(X_val)
 
-# 7. Calculate validation errors
+# Calculating validation errors
 print("Validation MAE:", mean_absolute_error(y_val, val_predictions))
 print("Validation RMSE:", np.sqrt(mean_squared_error(y_val, val_predictions)))
 
-# 8. Test the final model
+# Testing the final model
 test_predictions = model.predict(X_test)
 
-# 9. R² score - how good is the model?
+# R² score / how good is the model?
 from sklearn.metrics import r2_score
 val_r2  = r2_score(y_val,  val_predictions)
 test_r2 = r2_score(y_test, test_predictions)
@@ -84,11 +84,11 @@ test_r2 = r2_score(y_test, test_predictions)
 print("Validation R²:", round(val_r2, 3))
 print("Test R²:",       round(test_r2, 3))
 
-# 10. Calculate test errors
+# Calculating test errors
 print("Test MAE:",  mean_absolute_error(y_test, test_predictions))
 print("Test RMSE:", np.sqrt(mean_squared_error(y_test, test_predictions)))
 
-# 11. Plot - actual vs predicted price
+# Plotting - actual vs predicted price
 pd.DataFrame({"Actual": y_test.values, "Predicted": test_predictions}).plot.scatter(x="Actual", y="Predicted", alpha=0.3, title="Actual vs Predicted Price")
 
 #------------------------------------------------
@@ -140,11 +140,11 @@ print(f"k=5  score={round(silhouette_score(X_scaled, km5.labels_), 3)}")
 # Plot clusters - change km3 to whichever k had the highest silhouette score
 X_cluster.assign(cluster=km3.labels_).plot.scatter(x="price", y="milage", c="cluster", colormap="viridis", alpha=0.5, title="Car Clusters - Price vs Milage")
 
-# Add cluster labels back to the dataframe
+# Adding cluster labels back to the dataframe
 df_cars_clustered = X_cluster.copy()
 df_cars_clustered["cluster"] = km3.labels_  # change km3 to your best k
 
-# Describe each cluster
+# Describing each cluster
 print(df_cars_clustered.groupby("cluster").mean().round(0))
 
 # Cluster analysis results:
@@ -183,7 +183,7 @@ X_train_clf, X_test_clf, y_train_clf, y_test_clf = train_test_split(X_clf, y_clf
 
 # Train the model
 clf = RandomForestClassifier(n_estimators=100, random_state=42)
-# Life biggest question :D
+# 42 because it's the answer to meaning of life ;)
 clf.fit(X_train_clf, y_train_clf)
 
 # Test the model
